@@ -13,9 +13,10 @@ export const getAllByMovieId = async (req: Request, res: Response, next: NextFun
 }
 
 export const addByMovieId = async (req: Request, res: Response, next: NextFunction): Promise<Response<IComment> | void> => {
-    const { userId, movieId, text } = req.body;
+    const { userId, userName, movieId, text } = req.body;
     const data: IComment = {
         userId: userId,
+        userName: userName,
         movieId: movieId,
         text: text,
         createdAt: new Date
