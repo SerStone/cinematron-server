@@ -8,6 +8,10 @@ const commentSchema = new Schema({
         ref: 'User',
         required: true
     },
+    userName: {
+        type: String,
+        required: true
+    },
     movieId: {
         type: String,
         required: true
