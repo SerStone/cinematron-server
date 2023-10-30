@@ -3,6 +3,29 @@ import { model, Schema } from "mongoose";
 import { EGenders } from "../enums/user.enum";
 import { EUserStatus } from "../enums/user-status.enum";
 
+const FavoriteMovie = new Schema({
+    movieId: {
+        type: String,
+        required: true,
+    },
+    release_date: {
+        type: String,
+        required: false,
+    },
+    title: {
+        type: String,
+        required: true,
+    },
+    poster_path: {
+        type: String,
+        required: false,
+    },
+    vote_average: {
+        type: String,
+        required: false,
+    },
+});
+
 const userSchema = new Schema(
   {
     name: {
@@ -37,11 +60,7 @@ const userSchema = new Schema(
       type: String,
       required: false,
     },
-      favoriteMovies: [
-          {
-              type: String
-          }
-      ]
+      favoriteMovies: [FavoriteMovie]
   },
   {
     versionKey: false,
