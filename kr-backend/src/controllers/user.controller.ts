@@ -7,7 +7,7 @@ import { ApiError } from "../errors";
 import { userMapper } from "../mapers/user.mapper";
 import { s3Service } from "../services/s3.service";
 import { userService } from "../services/user.service";
-import { IUser } from "../types/user.type";
+import {IFavoriteMovie, IUser} from "../types/user.type";
 
 class UserController {
   public async findAll(
@@ -139,9 +139,19 @@ class UserController {
     }
   }
 
+  public async getFavoriteMovies(req: Request, res: Response, next: NextFunction): Promise<Response<IFavoriteMovie[]>> {
+    try {
+      const updatedUser = await userService.getFavoriteMovies(req.params.userId);
+
+      return res.json(updatedUser);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   public async addFavoriteMovie(req: Request, res: Response, next: NextFunction): Promise<Response<IUser>> {
     try {
-      const updatedUser = await userService.addFavoriteMovie(req.body.movieId, req.params.userId);
+      const updatedUser = await userService.addFavoriteMovie(req.body.movie, req.params.userId);
 
       const response = userMapper.toResponse(updatedUser);
 

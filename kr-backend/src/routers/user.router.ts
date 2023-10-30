@@ -51,6 +51,9 @@ router.post(
   commonMiddleware.isIdValid("userId"),
   userController.uploadVideo
 );
+router.get("/:userId/favorites",
+    userController.getFavoriteMovies
+);
 router.patch("/:userId/favorites",
     // authMiddleware.checkAccessToken,
     // commonMiddleware.isIdValid("userId"),

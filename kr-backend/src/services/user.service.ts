@@ -3,7 +3,7 @@ import { UploadedFile } from "express-fileupload";
 import { ApiError } from "../errors";
 import { User } from "../models/User.model";
 import { userRepository } from "../repositories/user.repository";
-import { IUser } from "../types/user.type";
+import {IFavoriteMovie, IUser} from "../types/user.type";
 import { s3Service } from "./s3.service";
 
 class UserService {
@@ -67,8 +67,18 @@ class UserService {
       { new: true }
     );
   }
+  
+  public async getFavoriteMovies(userId: string): Promise<IFavoriteMovie[]> {
+    try {
+      const user = await User.findById(userId);
 
-  public async addFavoriteMovie(movieId: string, userId: string): Promise<IUser> {
+      return user.favoriteMovies;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async addFavoriteMovie(movie: IFavoriteMovie, userId: string): Promise<IUser> {
     try {
       const user = await User.findById(userId);
 
@@ -76,7 +86,7 @@ class UserService {
         return null;
       }
 
-      user.favoriteMovies.push(movieId);
+      user.favoriteMovies.push(movie);
 
       return await user.save();
     } catch (e) {
@@ -88,11 +98,11 @@ class UserService {
     try {
       return await User.findOneAndUpdate(
           {_id: userId},
-          {$pull: {favoriteMovies: movieId}},
+          {$pull: {favoriteMovies: { movieId: movieId }}},
           {new: true}
       );
     } catch (e) {
-      console.error(e);
+      throw e;
     }
   }
 
